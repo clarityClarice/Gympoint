@@ -29,6 +29,17 @@ class UserController{
         })
     }
 
+    async index(req, res){
+        const users = await User.findAll({
+            attributes: ['id', 'name', 'email', 'avatar_id'],
+            include: [{
+                model: File, 
+                as: 'avatar'
+            }]
+        })
+        return res.json(users)
+    }
+
     async update(req, res){
         const schema = Yup.object().shape({
             name: Yup.string(),
