@@ -28,7 +28,7 @@ routes.post('/files', upload.single('file'), FileController.store)
 routes.post('/enrollment', EnrollmentController.store)
 
 //Routes from reading (get)
-routes.get('/users', UserController.index)
+//routes.get('/users', UserController.index)
 
 
 //Routes for updating (put)
