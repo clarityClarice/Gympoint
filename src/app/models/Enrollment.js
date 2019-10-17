@@ -15,8 +15,8 @@ class File extends Model{
         return this
     }
     static associate(models){
-        this.belongsTo(models.User, { foreingKey: 'student_id'})
-        this.belongsTo(models.Plan, { foreingKey: 'plan_id'})
+        this.belongsTo(models.User, { foreignKey: 'student_id'})
+        this.belongsTo(models.Plan, { foreignKey: 'plan_id'})
     }
 }
 
