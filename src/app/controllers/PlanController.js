@@ -28,6 +28,13 @@ class PlanController{
         })
     }
 
+    async index(req, res){
+        const plans = await Plan.findAll({
+            attributes: ['id', 'title', 'duration', 'price']
+        })
+        return res.json(plans)
+    }
+
     async update(req, res){
         const schema = Yup.object().shape({
             title: Yup.string(),

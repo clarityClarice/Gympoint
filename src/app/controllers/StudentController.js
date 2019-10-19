@@ -33,6 +33,16 @@ class StudentController{
         })
     }
 
+    async index(req, res){
+        const { page = 1 } = req.query
+        const students = await Student.findAll({
+            attributes: ['id', 'name', 'email', 'age', 'weight', 'height'],
+            limit: 20,
+            offset: (page - 1) * 20
+        })
+        return res.json(students)
+    }
+
     async update(req, res){
         const schema = Yup.object().shape({
             name: Yup.string(),
