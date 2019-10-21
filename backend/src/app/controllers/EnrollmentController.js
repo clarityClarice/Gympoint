@@ -39,7 +39,7 @@ class EnrollmentController{
         })
 
         if(!isStudent || !isPlan){
-            return res.status(401).json({ error: 'Plan or Student does not exist'})
+            return res.status(400).json({ error: 'Plan or Student does not exist'})
         }
 
         const hourStart = startOfHour(parseISO(start_date))
@@ -99,7 +99,6 @@ class EnrollmentController{
         *If sending student_id via body, will look for a enrollment related with this student.
         *If no student_id is provided, will return all enrollments.
         */
-        console.log(req.body)
         const { student_id } = req.body
         if(!student_id){
             const enrollments = await Enrollment.findAll({
@@ -129,7 +128,36 @@ class EnrollmentController{
     }
 
     async delete(req, res){
+        const enrollment = await Enrollment.destroy({ where: { id: req.body.id}})
+        if(!enrollment){
+            return res.status(404).json({ error: 'Enrollment not found' })
+        }
+        return res.json({ message: 'Enrollment deleted with success'})
+    }
+
+    async update(req,res){
+        const schema = Yup.object().shape({
+            id: Yup.number().required(),
+            student_id: Yup.number(),
+            plan_id: Yup.number(),
+            start_date: Yup.date(),
+        })
         
+        if(!(await schema.isValid(req.body))){
+            return res.status(400).json({ error: 'Validation fails'})
+        }
+        
+
+        const { id } = req.body
+        const enrollment = await Enrollment.findOne({ where: { id }})
+        const { student_id, plan_id, start_date}= await enrollment.update(req.body)
+        
+        return res.json({
+            id,
+            student_id,
+            plan_id,
+            start_date
+        })
     }
 }
 

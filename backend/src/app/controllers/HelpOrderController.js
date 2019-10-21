@@ -91,6 +91,12 @@ class HelpOrderController{
         })
 
     }
+    async index(req,res){
+        const { student_id } = req.body
+        const helpOrders = await HelpOrder.findAll({ where: { student_id }})
+
+        return res.json(helpOrders)
+    }
 
 }
 
