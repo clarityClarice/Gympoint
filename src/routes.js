@@ -9,17 +9,20 @@ import PlanController from './app/controllers/PlanController'
 import FileController from './app/controllers/FileController'
 import EnrollmentController from './app/controllers/EnrollmentController'
 import NotificationController from './app/controllers/NotificationController'
+import CheckinController from './app/controllers/CheckinController'
+import HelpOrderController from './app/controllers/HelpOrderController'
 
 import authMiddleware from './app/middlewares/auth'
 
 const routes = new Router()
 const upload = multer(multerConfig)
 
-//Routes get data
+
 
 //Routes for creation (post)
 routes.post('/users', UserController.store)
 routes.post('/sessions', SessionController.store)
+routes.post('/students/:id/checkins', CheckinController.store)
 
 routes.use(authMiddleware) // Only authorizes next ones if authenticated
 
@@ -27,20 +30,24 @@ routes.post('/plans', PlanController.store)
 routes.post('/students', StudentController.store)
 routes.post('/files', upload.single('file'), FileController.store)
 routes.post('/enrollments', EnrollmentController.store)
+routes.post('/students/help-orders', HelpOrderController.store)
 
-//Routes from reading (get)
+//Routes for reading (get)
 routes.get('/users', UserController.index)
 routes.get('/students', StudentController.index)
 routes.get('/plans', PlanController.index)
 routes.get('/enrollments', EnrollmentController.index)
+routes.get('/students/:id/checkins', CheckinController.index)
 
 //Routes for updating (put)
 routes.put('/students', StudentController.update)
 routes.put('/users', UserController.update)
 routes.put('/plans', PlanController.update)
 routes.put('/notifications/:id', NotificationController.update)
+routes.put('/students/help-orders', HelpOrderController.update)
 
 //Routes for deleting (delete)
 routes.delete('/enrollments/:id', EnrollmentController.delete)
+routes.delete('/plans', PlanController.delete)
 
 export default routes

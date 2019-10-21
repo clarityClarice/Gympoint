@@ -47,14 +47,22 @@ class PlanController{
         }
 
         const { title } = req.body
-        const student = await Student.findOne({ where: { title }})
+        const plan = await Plan.findOne({ where: { title }})
 
-        const { duration, price }= await student.update(req.body)
+        const { duration, price }= await plan.update(req.body)
         return res.json({
             title,
             duration,
             price
         })
+    }
+
+    async delete(req, res){
+        const plan = await Plan.destroy({ where: { id: req.body.id}})
+        if(!plan){
+            return res.status(404).json({ error: 'Plan not found' })
+        }
+        return res.json({ message: 'Deleted with success'})
     }
 }
 

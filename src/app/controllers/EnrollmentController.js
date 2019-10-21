@@ -80,11 +80,11 @@ class EnrollmentController{
             template: 'newEnrollment',
             context:{
                 student: student.name,
-                title: plan.title,
+                title: plan.tirle,
                 monthPrice: plan.price,
                 totalPrice: price,
-                date: `${firstDate.getDate()}/${firstDate.getMonth()}/${firstDate.getFullYear()}`,
-                endDate: `${end_date.getDate()}/${end_date.getMonth()}/${end_date.getFullYear()}`
+                date: start_date,
+                endDate: end_date
             }
         })
         return res.json({
