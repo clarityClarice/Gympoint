@@ -1,8 +1,26 @@
+import { isBefore } from 'date-fns'
 import Checkin from '../models/Checkin'
 
 class CheckinController{
     async store(req,res){
         const student_id = req.params.id
+
+        var today = new Date()
+        today.setDate(today.getDate()-7)
+
+        const checkins = await Checkin.findAll({ where: { student_id }})
+        
+        var count = 0
+        checkins.forEach(checkin => {
+            if(isBefore(today, checkin.createdAt)){
+                count ++
+            }
+        })
+        if(count >= 5){
+            res.status(400).json({ error: 'No more than 5 checkins for the last 7 days' })
+        }
+
+
         const checkin = await Checkin.create({ student_id })
 
         return res.json(checkin)
@@ -11,10 +29,9 @@ class CheckinController{
 
     async index(req, res){
 
-        const checkins = await Checkin.find({
+        const checkins = await Checkin.findAll({
             student:  req.params.id
-        }).sort('createdAt')
-
+        })
         return res.json(checkins)
     }
 }
